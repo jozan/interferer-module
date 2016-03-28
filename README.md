@@ -7,3 +7,7 @@ Built for [Particle Photon](https://store.particle.io/).
 ### TODO
 - HTTP Requests to the Interferer Machine
 - Documentation
+
+
+### Credits
+- Thanks to [nmattiasson](https://github.com/nmattisson) for creating [HttpClient](https://github.com/nmattisson/HttpClient).
