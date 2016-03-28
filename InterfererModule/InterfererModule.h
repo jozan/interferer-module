@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include "spark_wiring_usbserial.h"
+#include "HttpClient.h"
 #define LOGGING
 
 /**
@@ -27,9 +28,16 @@ public:
 
     bool shouldEmitState = false;
 
-    void emitState(std::vector<State> &state);
+    void emitState();
     void updateState(std::vector<State> &newState);
 private:
     bool hasStateChanged(std::vector<State> &newState);
     std::string jsonizeState();
+
+    // HTTP Request
+    HttpClient http;
+    http_header_t headers;
+    http_request_t request;
+    http_response_t response;
+    void setupHttpClient();
 };

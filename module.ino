@@ -13,8 +13,6 @@ int inputPins[] = {
 };
 
 void setup() {
-    //setupHttpClient();
-
     // Set which pins are outputting
     for (auto pinOut : outputPins) {
         pinMode(pinOut, OUTPUT);
@@ -45,7 +43,7 @@ void loop() {
     #endif
 
     // Emits state only when state has changed
-    module.emitState(module.state);
+    module.emitState();
 
     delay(500);
 }
@@ -74,13 +72,3 @@ void checkWiring() {
     // Updates state only if necessary
     module.updateState(newState);
 }
-
-/*
-void setupHttpClient() {
-    uint8_t server[] = { 192, 168, 0, 10 };
-    IPAddress IPfromBytes(server);
-
-    request.ip = IPfromBytes;
-    request.port = 8088;
-    request.path = "/exec.lua";
-}*/

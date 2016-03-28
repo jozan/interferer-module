@@ -1,4 +1,5 @@
 #include <sstream>
+#include "HttpClient.h"
 #include "InterfererModule.h"
 
 /**
@@ -6,17 +7,24 @@
 */
 InterfererModule::InterfererModule()
 {
-
+    setupHttpClient();
 }
 
-void InterfererModule::emitState(std::vector<State> &state)
+void InterfererModule::emitState()
 {
     if(!shouldEmitState) {
         return;
     }
 
+    auto json = jsonizeState().c_str();
+
+    request.body = json;
+    http.post(request, response);
+
     #ifdef LOGGING
-    Serial.println(jsonizeState().c_str());
+    Serial.println(json);
+    Serial.print("Response from server: ");
+    Serial.println(response.body);
     #endif
 
     shouldEmitState = false;
@@ -62,6 +70,25 @@ std::string InterfererModule::jsonizeState() {
     json << "]";
 
     return json.str();
+}
+
+void InterfererModule::setupHttpClient() {
+    uint8_t server[] = { 192, 168, 0, 10 };
+    int port = 8087;
+
+    /*
+    http_header_t headers[] = {
+        { "Content-Type", "application/json" },
+        { "Accept" , "*//*"},
+        { NULL, NULL } // NOTE: Always terminate headers with NULL
+    };
+    */
+
+    IPAddress IPfromBytes(server);
+
+    request.ip = IPfromBytes;
+    request.port = port;
+    request.path = "/";
 }
 
 bool operator ==(const State &a, const State &b) {
